@@ -1,0 +1,10 @@
+{
+    "Library_Location": "/home/tlindell/CVS/Kicad_Libraries/",
+    "Footprint_Location": "SamacSys_Parts.pretty/",
+    "Footprint": "${SAMACSYS_FP}",
+    "3D_Model": "${SAMACSYS_3D_SHAPES}",
+    "Symbol_Library_Name": "SamacSys_Parts.kicad_sym",
+    "TMP_FOLDER_ROOT":"./tmp"
+}
+
+
