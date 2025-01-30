@@ -1,6 +1,0 @@
-set(__QT_DEPLOY_TARGET_s_expr_parser_mod_FILE /home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/libs_expr_parser_mod.a)
-set(__QT_DEPLOY_TARGET_s_expr_parser_mod_TYPE STATIC_LIBRARY)
-set(__QT_DEPLOY_TARGET_s_expr_parser_symbol_FILE /home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/libs_expr_parser_symbol.a)
-set(__QT_DEPLOY_TARGET_s_expr_parser_symbol_TYPE STATIC_LIBRARY)
-set(__QT_DEPLOY_TARGET_QT_LIBRARY_LOADER_FILE /home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER)
-set(__QT_DEPLOY_TARGET_QT_LIBRARY_LOADER_TYPE EXECUTABLE)
