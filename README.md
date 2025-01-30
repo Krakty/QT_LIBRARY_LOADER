@@ -1,6 +1,6 @@
 # QT_LIBRARY_LOADER
 
-QT_LIBRARY_LOADER is a C++ project designed to parse and manipulate KiCad library files (`.kicad_sym` and `.kicad_mod`) using the Tree-sitter parsing library. This project aims to enable the modification of key attributes within these files, such as symbol names, footprint references, and model file paths.
+QT_LIBRARY_LOADER is a C++ project designed to parse and manipulate KiCad library files (`.kicad_sym` and `.kicad_mod`) using custom s_expr parsing libraries. This project aims to enable the modification of key attributes within these files, such as symbol names, footprint references, and model file paths.
 
 ## Features
 
