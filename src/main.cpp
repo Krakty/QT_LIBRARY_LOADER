@@ -8,6 +8,7 @@
 #include <filesystem>
 #include "kicad_sym_processor.h"
 #include "kicad_mod_processor.h"
+#include "recompress_library.h"
 
 namespace fs = std::filesystem;
 
@@ -70,6 +71,13 @@ int main(int argc, char* argv[]) {
         // Process the KiCad .kicad_sym files in ModifiedLibrary
         try {
             processKicadSymFiles(ModifiedLibrary,globalConfig);
+        } catch (const std::exception& e) {
+            std::cerr << "Error during processing: " << e.what() << std::endl;
+            return 1;
+        }
+        // Process the files in  ModifiedLibrary recompress them into a zip file in ./tmp
+        try {
+            Recompress_Library(baseName);
         } catch (const std::exception& e) {
             std::cerr << "Error during processing: " << e.what() << std::endl;
             return 1;

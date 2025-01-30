@@ -3,8 +3,6 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 
-Config globalConfig;
-
 using json = nlohmann::json;
 
 JSONLoader::JSONLoader(const std::string &filePath) : filePath(filePath) {}

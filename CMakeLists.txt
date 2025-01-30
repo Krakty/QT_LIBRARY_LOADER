@@ -24,7 +24,6 @@ add_executable(QT_LIBRARY_LOADER
     src/json_loader.cpp
     src/unzipper.cpp
     src/file_manager.cpp
-
     src/config.cpp
     src/Kicad_Mod_FileHandler.cpp
     src/Kicad_Sym_FileHandler.cpp
@@ -38,6 +37,8 @@ add_executable(QT_LIBRARY_LOADER
     src/kicad_mod_parser.cpp
     include/kicad_mod_parser.h
     include/kicad_mod_processor.h
+    src/recompress_library.cpp
+    include/recompress_library.h
 )
 
 

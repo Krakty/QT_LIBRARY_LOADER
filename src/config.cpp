@@ -4,6 +4,8 @@
 std::string ExtractedLibrary;
 std::string ModifiedLibrary;
 
+Config globalConfig;  // Define globalConfig
+
 // List of file extensions to search for
 const std::vector<std::string> FileExtensions = {
     ".epw", ".stp", ".wrl", ".step", ".wrz", ".x3d", ".idf", ".emn",
