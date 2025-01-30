@@ -116,6 +116,7 @@ void processKicadModFiles(const std::string& directory, const Config& config, co
                         }
                     }
                 }
+                //test
             } else {
                 std::cerr << RED << "No model node found in this file." << RESET << std::endl;
             }
