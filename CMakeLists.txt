@@ -21,25 +21,32 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 # Add the executable
 add_executable(QT_LIBRARY_LOADER
     src/main.cpp
+    src/config.cpp
+    src/file_manager.cpp
+    src/file_utils.cpp
     src/json_loader.cpp
     src/unzipper.cpp
-    src/file_manager.cpp
-    src/config.cpp
     src/Kicad_Mod_FileHandler.cpp
-    src/Kicad_Sym_FileHandler.cpp
-    src/kicad_sym_processor.cpp
-    include/kicad_sym_processor.h
-    src/kicad_sym_parser.cpp
-    include/kicad_sym_parser.h
-    include/file_utils.h
-    src/file_utils.cpp
-    src/kicad_mod_processor.cpp
     src/kicad_mod_parser.cpp
+    src/kicad_mod_processor.cpp
+    src/Kicad_Sym_FileHandler.cpp
+    src/kicad_sym_parser.cpp
+    src/kicad_sym_processor.cpp
+    src/recompress_library.cpp
+    include/config.h
+    include/file_manager.h
+    include/file_utils.h
+    include/json_loader.h
+    include/unzipper.h
+    include/Kicad_Mod_FileHandler.h
     include/kicad_mod_parser.h
     include/kicad_mod_processor.h
-    src/recompress_library.cpp
+    include/Kicad_Sym_FileHandler.h
+    include/kicad_sym_parser.h
+    include/kicad_sym_processor.h
     include/recompress_library.h
 )
+
 
 
 # Include the s_expr library as a subdirectory
