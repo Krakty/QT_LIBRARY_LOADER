@@ -7,10 +7,10 @@ QT_LIBRARY_LOADER is a C++ project designed to parse and manipulate KiCad librar
 - **Parsing `.kicad_sym` Files**: Extracts and modifies symbol properties.
 - **Parsing `.kicad_mod` Files**: Extracts and modifies footprint attributes.
 - **C++ Implementation**: Provides a structured and extendable approach for handling KiCad files.
-- **Operation**: This program will extract the zip file containing the library and make a few modifications
-   1.)  the files are renamed to the basename of the zip file for consistancy by default libraries from mouser don't necessarly have matching footprints and symbol names
-   2.)  the 3D Model path is changed inside the .kicad_mod file to point to the correct path of the file.
-   3.)  inside the .kicad_sym file the footprint is modified to point to the correct footprint and it's location
+- **Operation**: This program will extract the zip file containing the library and make a few modifications  
+   1.)  the files are renamed to the basename of the zip file for consistancy by default libraries from mouser don't necessarly have matching footprints and symbol names  
+   2.)  the 3D Model path is changed inside the .kicad_mod file to point to the correct path of the file.  
+   3.)  inside the .kicad_sym file the footprint is modified to point to the correct footprint and it's location  
 
 ## Project Structure
 ```
