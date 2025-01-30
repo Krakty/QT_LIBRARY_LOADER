@@ -80,3 +80,8 @@ CMakeLists.txt.user*
 .rcc/
 .uic/
 /build*/
+/build/
+*.o
+*.a
+*.so
+.qtcreator*
