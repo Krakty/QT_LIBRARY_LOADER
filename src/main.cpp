@@ -1,12 +1,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "file_manager.h"
 #include "json_loader.h"
 #include "unzipper.h"
-#include "file_manager.h"
-#include "kicad_parser.h"
 #include "config.h"
 #include <filesystem>
+#include "kicad_sym_processor.h"
+#include "kicad_mod_processor.h"
 
 namespace fs = std::filesystem;
 
@@ -19,6 +20,9 @@ int main(int argc, char* argv[]) {
     std::string zipFilePath = argv[1];
 
     try {
+        // Clear /tmp directory
+        FileManager::clearTempDir("./tmp");
+
         // Load the configuration
         JSONLoader loader("QT_LIBRARY_LOADER.json");
         loader.loadConfig();
@@ -26,12 +30,9 @@ int main(int argc, char* argv[]) {
         // Extract the basename of the zip file
         std::string baseName = fs::path(zipFilePath).stem().string();
 
-        // Generate random string
-        std::string randomString = FileManager::generateRandomString(24);
-
-        // Create temporary directories using TMP_FOLDER_ROOT from config
-        ExtractedLibrary = FileManager::createTempDir(globalConfig.tmpFolderRoot, baseName, randomString, "kicad_orig");
-        ModifiedLibrary = FileManager::createTempDir(globalConfig.tmpFolderRoot, baseName, randomString, "kicad_working");
+        // Create temporary directories
+        ExtractedLibrary = FileManager::createTempDir("./tmp", baseName, "kicad_orig");
+        ModifiedLibrary = FileManager::createTempDir("./tmp", baseName, "kicad_working");
 
         std::cout << "Original directory: " << ExtractedLibrary << std::endl;
         std::cout << "Working directory: " << ModifiedLibrary << std::endl;
@@ -39,23 +40,43 @@ int main(int argc, char* argv[]) {
         // Extract the contents of the zip file to the original directory
         Unzipper::extractToDir(zipFilePath, ExtractedLibrary);
 
-        // Search for specified file types in the ExtractedLibrary directory
+        // Search for specified file types in the extracted library
         std::vector<std::string> foundFiles;
         FileManager::searchFiles(ExtractedLibrary, FileExtensions, foundFiles);
 
-        // Copy found files to the ModifiedLibrary location
+        // Copy found files to the modified library location
         FileManager::copyFiles(foundFiles, ModifiedLibrary);
 
-        // Rename files in the ModifiedLibrary location
+        // Rename files in the modified library location
         FileManager::renameFiles(ModifiedLibrary, baseName);
 
-        // Print found files
-        std::cout << "Found files:" << std::endl;
-        for (const auto &file : foundFiles) {
-            std::cout << file << std::endl;
+        std::cout << "Files extracted, searched, copied, and renamed successfully." << std::endl;
+        std::cout << std::endl << std::endl;
+        std::cout << "************************************************************" << std::endl;
+
+        std::cout << GREEN << "=-=-=-=-=-=- UPDATING .kicad_mod =-=-=-=-=-=-\n" << RESET;
+        std::cout << BOLD_PURPLE << "modifiedLibrary : " << GREEN << ModifiedLibrary << RESET << std::endl;
+        // Process the KiCad .mod files in ModifiedLibrary
+        try {
+            // Pass the dynamic values into processKicadModFiles
+            processKicadModFiles(ModifiedLibrary, globalConfig, baseName);
+        } catch (const std::exception& e) {
+
+            std::cerr << RED << "Error during processing: " << e.what() << RESET << std::endl;
+            return 1;
+        }
+        std::cout << "\n\n";
+        std::cout << GREEN << "=-=-=-=-=-=- UPDATING .kicad_sym =-=-=-=-=-=-\n" << RESET;
+        // Process the KiCad .kicad_sym files in ModifiedLibrary
+        try {
+            processKicadSymFiles(ModifiedLibrary,globalConfig);
+        } catch (const std::exception& e) {
+            std::cerr << "Error during processing: " << e.what() << std::endl;
+            return 1;
         }
 
-        std::cout << "Files extracted, searched, copied, and renamed successfully." << std::endl;
+
+
     } catch (const std::exception &e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return 1;

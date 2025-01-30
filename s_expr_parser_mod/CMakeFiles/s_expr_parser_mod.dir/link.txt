@@ -1,0 +1,2 @@
+/usr/bin/ar qc libs_expr_parser_mod.a CMakeFiles/s_expr_parser_mod.dir/s_expr_parser_mod_autogen/mocs_compilation.cpp.o CMakeFiles/s_expr_parser_mod.dir/src/s_expr_node_mod.cpp.o CMakeFiles/s_expr_parser_mod.dir/src/s_expr_parser_mod.cpp.o
+/usr/bin/ranlib libs_expr_parser_mod.a

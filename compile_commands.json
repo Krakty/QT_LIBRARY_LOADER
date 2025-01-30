@@ -1,0 +1,116 @@
+[
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -I/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -std=gnu++17 -mno-direct-extern-access -o CMakeFiles/QT_LIBRARY_LOADER.dir/QT_LIBRARY_LOADER_autogen/mocs_compilation.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/mocs_compilation.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/mocs_compilation.cpp",
+  "output": "CMakeFiles/QT_LIBRARY_LOADER.dir/QT_LIBRARY_LOADER_autogen/mocs_compilation.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -I/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -std=gnu++17 -mno-direct-extern-access -o CMakeFiles/QT_LIBRARY_LOADER.dir/src/main.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/src/main.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/src/main.cpp",
+  "output": "CMakeFiles/QT_LIBRARY_LOADER.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -I/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -std=gnu++17 -mno-direct-extern-access -o CMakeFiles/QT_LIBRARY_LOADER.dir/src/json_loader.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/src/json_loader.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/src/json_loader.cpp",
+  "output": "CMakeFiles/QT_LIBRARY_LOADER.dir/src/json_loader.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -I/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -std=gnu++17 -mno-direct-extern-access -o CMakeFiles/QT_LIBRARY_LOADER.dir/src/unzipper.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/src/unzipper.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/src/unzipper.cpp",
+  "output": "CMakeFiles/QT_LIBRARY_LOADER.dir/src/unzipper.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -I/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -std=gnu++17 -mno-direct-extern-access -o CMakeFiles/QT_LIBRARY_LOADER.dir/src/file_manager.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/src/file_manager.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/src/file_manager.cpp",
+  "output": "CMakeFiles/QT_LIBRARY_LOADER.dir/src/file_manager.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -I/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -std=gnu++17 -mno-direct-extern-access -o CMakeFiles/QT_LIBRARY_LOADER.dir/src/config.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/src/config.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/src/config.cpp",
+  "output": "CMakeFiles/QT_LIBRARY_LOADER.dir/src/config.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -I/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -std=gnu++17 -mno-direct-extern-access -o CMakeFiles/QT_LIBRARY_LOADER.dir/src/Kicad_Mod_FileHandler.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/src/Kicad_Mod_FileHandler.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/src/Kicad_Mod_FileHandler.cpp",
+  "output": "CMakeFiles/QT_LIBRARY_LOADER.dir/src/Kicad_Mod_FileHandler.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -I/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -std=gnu++17 -mno-direct-extern-access -o CMakeFiles/QT_LIBRARY_LOADER.dir/src/Kicad_Sym_FileHandler.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/src/Kicad_Sym_FileHandler.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/src/Kicad_Sym_FileHandler.cpp",
+  "output": "CMakeFiles/QT_LIBRARY_LOADER.dir/src/Kicad_Sym_FileHandler.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -I/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -std=gnu++17 -mno-direct-extern-access -o CMakeFiles/QT_LIBRARY_LOADER.dir/src/kicad_sym_processor.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/src/kicad_sym_processor.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/src/kicad_sym_processor.cpp",
+  "output": "CMakeFiles/QT_LIBRARY_LOADER.dir/src/kicad_sym_processor.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -I/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -std=gnu++17 -mno-direct-extern-access -o CMakeFiles/QT_LIBRARY_LOADER.dir/src/kicad_sym_parser.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/src/kicad_sym_parser.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/src/kicad_sym_parser.cpp",
+  "output": "CMakeFiles/QT_LIBRARY_LOADER.dir/src/kicad_sym_parser.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -I/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -std=gnu++17 -mno-direct-extern-access -o CMakeFiles/QT_LIBRARY_LOADER.dir/src/file_utils.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/src/file_utils.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/src/file_utils.cpp",
+  "output": "CMakeFiles/QT_LIBRARY_LOADER.dir/src/file_utils.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -I/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -std=gnu++17 -mno-direct-extern-access -o CMakeFiles/QT_LIBRARY_LOADER.dir/src/kicad_mod_processor.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/src/kicad_mod_processor.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/src/kicad_mod_processor.cpp",
+  "output": "CMakeFiles/QT_LIBRARY_LOADER.dir/src/kicad_mod_processor.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_NO_DEBUG -I/home/tlindell/WORK/QT_LIBRARY_LOADER/QT_LIBRARY_LOADER_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -std=gnu++17 -mno-direct-extern-access -o CMakeFiles/QT_LIBRARY_LOADER.dir/src/kicad_mod_parser.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/src/kicad_mod_parser.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/src/kicad_mod_parser.cpp",
+  "output": "CMakeFiles/QT_LIBRARY_LOADER.dir/src/kicad_mod_parser.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod",
+  "command": "/usr/bin/c++  -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/s_expr_parser_mod_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -std=gnu++17 -o CMakeFiles/s_expr_parser_mod.dir/s_expr_parser_mod_autogen/mocs_compilation.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/s_expr_parser_mod_autogen/mocs_compilation.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/s_expr_parser_mod_autogen/mocs_compilation.cpp",
+  "output": "s_expr_parser_mod/CMakeFiles/s_expr_parser_mod.dir/s_expr_parser_mod_autogen/mocs_compilation.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod",
+  "command": "/usr/bin/c++  -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/s_expr_parser_mod_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -std=gnu++17 -o CMakeFiles/s_expr_parser_mod.dir/src/s_expr_node_mod.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/src/s_expr_node_mod.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/src/s_expr_node_mod.cpp",
+  "output": "s_expr_parser_mod/CMakeFiles/s_expr_parser_mod.dir/src/s_expr_node_mod.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod",
+  "command": "/usr/bin/c++  -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/s_expr_parser_mod_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/include -std=gnu++17 -o CMakeFiles/s_expr_parser_mod.dir/src/s_expr_parser_mod.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/src/s_expr_parser_mod.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_mod/src/s_expr_parser_mod.cpp",
+  "output": "s_expr_parser_mod/CMakeFiles/s_expr_parser_mod.dir/src/s_expr_parser_mod.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol",
+  "command": "/usr/bin/c++  -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/s_expr_parser_symbol_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -std=gnu++17 -o CMakeFiles/s_expr_parser_symbol.dir/s_expr_parser_symbol_autogen/mocs_compilation.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/s_expr_parser_symbol_autogen/mocs_compilation.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/s_expr_parser_symbol_autogen/mocs_compilation.cpp",
+  "output": "s_expr_parser_symbol/CMakeFiles/s_expr_parser_symbol.dir/s_expr_parser_symbol_autogen/mocs_compilation.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol",
+  "command": "/usr/bin/c++  -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/s_expr_parser_symbol_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -std=gnu++17 -o CMakeFiles/s_expr_parser_symbol.dir/src/s_expr_node_symbol.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/src/s_expr_node_symbol.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/src/s_expr_node_symbol.cpp",
+  "output": "s_expr_parser_symbol/CMakeFiles/s_expr_parser_symbol.dir/src/s_expr_node_symbol.cpp.o"
+},
+{
+  "directory": "/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol",
+  "command": "/usr/bin/c++  -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/s_expr_parser_symbol_autogen/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include -I/home/tlindell/WORK/QT_LIBRARY_LOADER/include/nlohmann -I/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/include -std=gnu++17 -o CMakeFiles/s_expr_parser_symbol.dir/src/s_expr_parser_symbol.cpp.o -c /home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/src/s_expr_parser_symbol.cpp",
+  "file": "/home/tlindell/WORK/QT_LIBRARY_LOADER/s_expr_parser_symbol/src/s_expr_parser_symbol.cpp",
+  "output": "s_expr_parser_symbol/CMakeFiles/s_expr_parser_symbol.dir/src/s_expr_parser_symbol.cpp.o"
+}
+]
