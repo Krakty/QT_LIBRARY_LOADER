@@ -22,4 +22,5 @@ void JSONLoader::loadConfig() {
     globalConfig.model3D = j.at("3D_Model").get<std::string>();
     globalConfig.symbolLibraryName = j.at("Symbol_Library_Name").get<std::string>();
     globalConfig.tmpFolderRoot = j.at("TMP_FOLDER_ROOT").get<std::string>();
+    globalConfig.model3DLocation = j.at("3D_Model_Location").get<std::string>();
 }

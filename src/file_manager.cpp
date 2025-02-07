@@ -1,4 +1,5 @@
 #include "file_manager.h"
+#include "config.h"
 #include <filesystem>
 #include <iostream>
 #include <algorithm>
@@ -6,19 +7,22 @@
 
 namespace fs = std::filesystem;
 
-void FileManager::searchFiles(const std::string &directory, const std::vector<std::string> &extensions, std::vector<std::string> &foundFiles) {
+void FileManager::searchFiles(const std::string &directory,
+                              const std::vector<std::string> &extensions,
+                              std::vector<std::string> &foundFiles) {
     try {
         for (const auto &entry : fs::recursive_directory_iterator(directory)) {
             if (fs::is_regular_file(entry.path())) {
                 std::string extension = entry.path().extension().string();
                 if (std::find(extensions.begin(), extensions.end(), extension) != extensions.end()) {
                     foundFiles.push_back(entry.path().string());
-                    std::cout << "Found file: " << entry.path() << " (extension: " << extension << ")" << std::endl;
+                    std::cout << BRIGHT_CYAN << "    Found file: " << entry.path() << " (extension: " << extension << ")\n"<< RESET;
                 }
             }
         }
     } catch (const std::exception &e) {
-        std::cerr << "Error searching files in directory: " << directory << ". Reason: " << e.what() << std::endl;
+        std::cerr << "Error searching files in directory: " << directory
+                  << ". Reason: " << e.what() << std::endl;
         throw;
     }
 }
@@ -30,37 +34,81 @@ void FileManager::copyFiles(const std::vector<std::string> &files, const std::st
         fs::path destinationPath = fs::path(destination) / sourcePath.filename();
         try {
             fs::copy_file(sourcePath, destinationPath, fs::copy_options::overwrite_existing);
-            std::cout << "Copied: " << sourcePath << " -> " << destinationPath << std::endl;
+            std::cout << BRIGHT_CYAN << "    Copied: " << sourcePath << " -> " << destinationPath << std::endl << RESET;
         } catch (const fs::filesystem_error &e) {
-            std::cerr << "Error copying file: " << sourcePath << ". Reason: " << e.what() << std::endl;
+            std::cerr << "Error copying file: " << sourcePath
+                      << ". Reason: " << e.what() << std::endl;
         }
     }
 }
 
 void FileManager::renameFiles(const std::string &directory, const std::string &newBaseName) {
-    size_t counter = 0;
+    // Collect all entries first
+    std::vector<fs::directory_entry> entries;
     for (const auto &entry : fs::directory_iterator(directory)) {
         if (fs::is_regular_file(entry.path())) {
-            std::string extension = entry.path().extension().string();
-            //fs::path newPath = fs::path(directory) / (newBaseName + "_" + std::to_string(counter++) + extension);
-            fs::path newPath = fs::path(directory) / (newBaseName + extension);
-            fs::rename(entry.path(), newPath);
-            std::cout << "Renamed: " << entry.path() << " -> " << newPath << std::endl;
+            entries.push_back(entry);
+        }
+    }
+
+    // Pass 1: rename .kicad_mod files with special logic
+    int modFileCount = 0;
+    for (auto &entry : entries) {
+        fs::path oldPath = entry.path();
+        if (oldPath.extension() == ".kicad_mod") {
+            fs::path newPath;
+
+            if (modFileCount == 0) {
+                // first -> basename.kicad_mod
+                newPath = fs::path(directory) / (newBaseName + ".kicad_mod");
+            } else {
+                // subsequent -> basename_A.kicad_mod, etc.
+                // note: only handles up to 26 files (A-Z). For more, expand logic.
+                char suffix = static_cast<char>('A' + (modFileCount - 1));
+                newPath = fs::path(directory) / (newBaseName + std::string("_") + suffix + ".kicad_mod");
+            }
+
+            try {
+                fs::rename(oldPath, newPath);
+                std::cout << BRIGHT_CYAN << "    Renamed: " << oldPath << " -> " << newPath << std::endl;
+                modFileCount++;
+            } catch (const fs::filesystem_error &e) {
+                std::cerr << "Error renaming file: " << oldPath
+                          << ". Reason: " << e.what() << std::endl;
+            }
+        }
+    }
+
+    // Pass 2: rename all other files as before
+    for (auto &entry : entries) {
+        fs::path oldPath = entry.path();
+        if (oldPath.extension() != ".kicad_mod") {
+            fs::path newPath = fs::path(directory) / (newBaseName + oldPath.extension().string());
+            try {
+                fs::rename(oldPath, newPath);
+                std::cout << "    Renamed: " << oldPath << " -> " << newPath << std::endl;
+            } catch (const fs::filesystem_error &e) {
+                std::cerr << "Error renaming file: " << oldPath
+                          << ". Reason: " << e.what() << std::endl;
+            }
         }
     }
 }
 
-std::string FileManager::createTempDir(const std::string& root, const std::string& baseName, const std::string& suffix) {
+std::string FileManager::createTempDir(const std::string& root,
+                                       const std::string& baseName,
+                                       const std::string& suffix) {
     std::string fullPath = root + "/" + baseName + "_" + suffix;
     try {
         fs::create_directories(fullPath);
         if (!fs::exists(fullPath)) {
             throw std::runtime_error("Failed to create directory: " + fullPath);
         }
-        std::cout << "Successfully created directory: " << fullPath << std::endl;
+        std::cout << BOLD_CYAN << "Successfully created directory: " << fullPath << RESET << std::endl;
 
     } catch (const std::exception& e) {
-        std::cerr << "Error creating directory: " << fullPath << ". Reason: " << e.what() << std::endl;
+        std::cerr << "Error creating directory: " << fullPath
+                  << ". Reason: " << e.what() << std::endl;
         throw;
     }
     return fullPath;
@@ -70,10 +118,117 @@ void FileManager::clearTempDir(const std::string& root) {
     try {
         if (fs::exists(root)) {
             fs::remove_all(root);
-            std::cout << "Temporary directory cleared: " << root << std::endl;
         }
     } catch (const fs::filesystem_error &e) {
-        std::cerr << "Error clearing temporary directory: " << root << ". Reason: " << e.what() << std::endl;
+        std::cerr << "Error clearing temporary directory: " << root
+                  << ". Reason: " << e.what() << std::endl;
         throw;
     }
 }
+
+void FileManager::copyKicadModFiles() {
+    std::string destination = globalConfig.libraryLocation + globalConfig.footprintLocation;
+    if (!fs::exists(destination)) {
+        fs::create_directories(destination);
+    }
+
+    for (const auto& entry : fs::directory_iterator(ModifiedLibrary)) {
+        if (entry.path().extension() == ".kicad_mod") {
+            fs::path destPath = fs::path(destination) / entry.path().filename();
+            try {
+                fs::copy_file(entry.path(), destPath, fs::copy_options::overwrite_existing);
+                std::cout << CYAN << "Copy .kicad_mod files:\n" << RESET;
+
+                std::cout << RED << "  SOURCE:      "
+                          << YELLOW << entry.path()
+                          << RESET << "\n";
+                std::cout << RED << "  DESTINATION: "
+                          << YELLOW << destPath
+                          << RESET << "\n\n";
+
+            } catch (const fs::filesystem_error& e) {
+                std::cerr << "Error copying .kicad_mod file: " << e.what() << std::endl;
+            }
+        }
+    }
+}
+
+void FileManager::copy3DModelFiles() {
+    std::string destination = globalConfig.libraryLocation + globalConfig.model3DLocation;
+    if (!fs::exists(destination)) {
+        fs::create_directories(destination);
+    }
+
+    for (const auto& ext : FileTypes3D) {
+        for (const auto& entry : fs::directory_iterator(ModifiedLibrary)) {
+            if (entry.path().extension() == ext) {
+                fs::path destPath = fs::path(destination) / entry.path().filename();
+                try {
+                    fs::copy_file(entry.path(), destPath, fs::copy_options::overwrite_existing);
+                    std::cout << CYAN << "Copy 3D files:\n" << RESET;
+
+                    std::cout << RED << "  SOURCE:      "
+                              << YELLOW << entry.path()
+                              << RESET << "\n";
+                    std::cout << RED << "  DESTINATION: "
+                              << YELLOW << destPath
+                              << RESET << "\n\n";
+                    return; // Only copy the first valid 3D model found
+                } catch (const fs::filesystem_error& e) {
+                    std::cerr << "Error copying 3D model file: " << e.what() << std::endl;
+                }
+            }
+        }
+    }
+
+}
+
+void FileManager::copyMergedSymbolFile() {
+    fs::path sourcePath = fs::path(ModifiedLibrary) / globalConfig.symbolLibraryName;
+    fs::path destination = fs::path(globalConfig.libraryLocation) / globalConfig.symbolLibraryName;
+
+    if (fs::exists(sourcePath)) {
+        try {
+            fs::copy_file(sourcePath, destination, fs::copy_options::overwrite_existing);
+            std::cout << CYAN << "Copy merged .kicad_sym files:\n" << RESET;
+
+            std::cout << RED << "  SOURCE:      "
+                      << YELLOW << sourcePath
+                      << RESET << "\n";
+            std::cout << RED << "  DESTINATION: "
+                      << YELLOW << destination
+                      << RESET << "\n\n";
+
+        } catch (const fs::filesystem_error& e) {
+            std::cerr << "Error copying .kicad_sym file: " << e.what() << std::endl;
+        }
+    } else {
+        std::cerr << "Error: Merged .kicad_sym file not found in " << ModifiedLibrary << std::endl;
+    }
+}
+
+void FileManager::copyMasterSymbolFile() {
+    std::string source = globalConfig.libraryLocation + globalConfig.symbolLibraryName;
+    std::string destination = ModifiedLibrary + "/" + globalConfig.symbolLibraryName;
+    std::cout << CYAN << "[INFO] Copying master .kicad_sym:\n"
+              << BOLD_BRIGHT_GREEN << "SOURCE:      " << BOLD_CYAN << source << "\n"
+              << BOLD_BRIGHT_GREEN << "DESTINATION: " << BOLD_CYAN << destination
+              << RESET << std::endl;
+    fs::copy_file(source, destination, fs::copy_options::overwrite_existing);
+}
+
+
+void FileManager::BackupMasterKicadSym() {
+    fs::path masterPath = fs::path(globalConfig.libraryLocation) / globalConfig.symbolLibraryName;
+    fs::path backupPath = masterPath;
+    backupPath.replace_extension(".bak");
+
+    try {
+        fs::copy_file(masterPath, backupPath, fs::copy_options::overwrite_existing);
+        std::cout << CYAN << "[INFO] Backup created at: " << BRIGHT_CYAN << backupPath << RESET << "\n";
+    } catch (const std::exception& e) {
+        std::cerr << "[ERROR] Error creating backup: " << e.what() << "\n";
+    }
+}
+
+// namespace FileManager

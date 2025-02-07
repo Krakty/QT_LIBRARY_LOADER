@@ -1,43 +1,42 @@
 #include "kicad_sym_parser.h"
-#include "file_utils.h" // For getFilesWithExtension
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <stdexcept>
 #include "s_expr_node_symbol.h"
-#include "s_expr_parser_symbol.h"
+#include "Kicad_Sym_FileHandler.h"
+#include <filesystem>
+#include <vector>
+#include <memory>
+#include <iostream>
 
-// Parses all .kicad_sym files in the specified directory
+namespace fs = std::filesystem;
+
+/**
+ * Parses all `.kicad_sym` files in the specified directory.
+ * Returns a vector of parsed root nodes for further processing.
+ */
 std::vector<std::shared_ptr<SeExprNodeSymbol>> parseKicadSymFiles(const std::string& directory) {
     std::vector<std::shared_ptr<SeExprNodeSymbol>> parsedFiles;
 
-    // Check if the directory exists
-    if (!std::filesystem::exists(directory)) {
-        throw std::runtime_error("Error: Directory does not exist: " + directory);
+    if (!fs::exists(directory)) {
+        std::cerr << "[ERROR] Directory does not exist: " << directory << "\n";
+        return parsedFiles;
     }
 
-    // Get all .kicad_sym files in the directory
-    std::vector<std::string> symFiles = getFilesWithExtension(directory, ".kicad_sym");
+    std::cout << "[INFO] Parsing `.kicad_sym` files in directory: " << directory << "\n";
 
-    // Parse each file
-    for (const auto& file : symFiles) {
-        std::ifstream inFile(file);
-        if (!inFile.is_open()) {
-            std::cerr << "Error: Unable to open file " << file << std::endl;
-            continue;
+    for (const auto& entry : fs::directory_iterator(directory)) {
+        if (entry.path().extension() == ".kicad_sym") {
+            try {
+                auto root = KicadSymFileHandler::loadFromFile(entry.path().string());
+                parsedFiles.push_back(root);
+                std::cout << "[DEBUG] Successfully parsed: " << entry.path().filename() << "\n";
+            } catch (const std::exception& e) {
+                std::cerr << "[ERROR] Failed to parse " << entry.path().filename()
+                << ": " << e.what() << "\n";
+            }
         }
+    }
 
-        // Read file content into a string
-        std::string content((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
-        inFile.close();
-
-        try {
-            // Parse the S-expression content
-            auto parsed = SeExprParserSymbol::parse(content);
-            parsedFiles.push_back(parsed);
-        } catch (const std::exception& e) {
-            std::cerr << "Error parsing file " << file << ": " << e.what() << std::endl;
-        }
+    if (parsedFiles.empty()) {
+        std::cout << "[INFO] No `.kicad_sym` files found in directory: " << directory << "\n";
     }
 
     return parsedFiles;

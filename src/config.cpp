@@ -1,19 +1,28 @@
 #include "config.h"
+#include <iostream>
+#include <string>
+#include <vector>
 
-// Initialize global variables
+// Define global variables (exactly once)
 std::string ExtractedLibrary;
 std::string ModifiedLibrary;
+Config globalConfig;
 
-Config globalConfig;  // Define globalConfig
-
-// List of file extensions to search for
+// Define file extension lists
 const std::vector<std::string> FileExtensions = {
     ".epw", ".stp", ".wrl", ".step", ".wrz", ".x3d", ".idf", ".emn",
     ".kicad_sym", ".kicad_mod"
 };
 
-// List of 3d Files were interested in extracting
-
 const std::vector<std::string> FileTypes3D = {
     ".stp", ".wrl", ".step"
 };
+
+// Pause function
+void pauseExecution(const std::string& message) {
+    std::cout << BOLD_BRIGHT_WHITE << message << RESET << std::endl;
+    char ch;
+    do {
+        ch = std::cin.get();  // Wait for user input
+    } while (ch != ' ' && ch != '\n');  // Continue only on Space or Enter
+}

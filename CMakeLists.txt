@@ -45,6 +45,10 @@ add_executable(QT_LIBRARY_LOADER
     include/kicad_sym_parser.h
     include/kicad_sym_processor.h
     include/recompress_library.h
+    include/display_info.h
+    src/display_info.cpp
+
+
 )
 
 
@@ -52,6 +56,7 @@ add_executable(QT_LIBRARY_LOADER
 # Include the s_expr library as a subdirectory
 add_subdirectory(s_expr_parser_mod)
 add_subdirectory(s_expr_parser_symbol)
+add_subdirectory(s_expr_merge_symbol)
 
 
 # Link libraries
@@ -65,6 +70,7 @@ target_link_libraries(QT_LIBRARY_LOADER
     PRIVATE ${MINIZIP_LIBRARIES}
     s_expr_parser_symbol
     s_expr_parser_mod
+    s_expr_merge_symbol
 )
 
 # Install targets

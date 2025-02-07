@@ -1,91 +1,116 @@
 #include "kicad_sym_processor.h"
-#include "kicad_sym_parser.h"
+#include "Kicad_Sym_FileHandler.h"
 #include "s_expr_node_symbol.h"
 #include "config.h"
 #include <filesystem>
 #include <iostream>
 #include <stdexcept>
-#include <fstream>
+#include <vector>
 
 namespace fs = std::filesystem;
 
-void updateFootprintProperty(std::shared_ptr<SeExprNodeSymbol> root, const Config& config) {
-    // Search for the .kicad_sym file in the ModifiedLibrary directory
-    std::string filename;
-    for (const auto& entry : fs::directory_iterator(ModifiedLibrary)) {
-        if (entry.path().extension() == ".kicad_mod") {
-            filename = entry.path().filename().string();
-            break; // We only need one match
-        }
-    }
+/**
+ * Updates the "Footprint" property for a given root symbol node.
+ *
+ * If the property doesn't exist, it's created. If it exists but
+ * doesn't have enough child nodes, new ones are appended.
+ */
+void updateFootprintProperty(std::shared_ptr<SeExprNodeSymbol> root, const std::string& basename)
+{
+    std::cout << CYAN << "[DEBUG] Attempting to update 'Footprint' property with basename: " << BOLD_BRIGHT_CYAN <<  basename << RESET <<"\n";
 
-    if (filename.empty()) {
-        throw std::runtime_error("No .kicad_sym file found in the specified directory: " + ModifiedLibrary);
-    }
-
-    // Construct the new Footprint value using the passed `config`
-    std::string newFootprintValue = config.footprint + "/" + filename;
-
-    // Find the "Footprint" property node
     auto footprintProperty = root->findPropertyByName("Footprint");
+    std::string newFootprint = "0_Custom-Library:" + basename;
+
     if (footprintProperty) {
+        std::cout << CYAN << "[DEBUG] Found 'Footprint' property" <<"\n";
+        std::cout << BOLD_BRIGHT_PURPLE << "    Current value = "
+                  << BOLD_BRIGHT_CYAN << (footprintProperty->children.size() > 2 ? footprintProperty->children[2]->value : "N/A")
+                  << RESET << "\n";
+        std::cout << BOLD_BRIGHT_PURPLE << "    New value     = "
+                  << BOLD_BRIGHT_CYAN << newFootprint << RESET << "\n";
+
         if (footprintProperty->children.size() > 2) {
-            // Store the original value before updating
-            std::string originalValue = footprintProperty->children[2]->value;
-
-            // Log the current value and the new value
-            std::cout << GREEN << "Found Footprint property node: " << BOLD_PURPLE << footprintProperty->toString() << RESET << std::endl;
-            std::cout << GREEN << "Updating Footprint value from: " << BOLD_PURPLE << originalValue << GREEN
-                      << " to: " << BOLD_PURPLE << "\"" + newFootprintValue + "\"" << RESET << std::endl;
-
-            // Update the Footprint property with the constructed value
-            footprintProperty->children[2]->value = "\"" + newFootprintValue + "\"";
+            footprintProperty->children[2]->value = "\"" + newFootprint + "\"";
         } else {
-            std::cerr << RED << "Error: Footprint property node does not have enough children to update." << RESET << std::endl;
+            footprintProperty->addChild(std::make_shared<SeExprNodeSymbol>("\"" + newFootprint + "\""));
         }
     } else {
-        std::cerr << RED << "Error: No Footprint property node found." << RESET << std::endl;
+        std::cout << "[DEBUG] 'Footprint' property not found. Creating new property.\n";
+        auto newProperty = std::make_shared<SeExprNodeSymbol>();
+        newProperty->addChild(std::make_shared<SeExprNodeSymbol>("property"));
+        newProperty->addChild(std::make_shared<SeExprNodeSymbol>("\"Footprint\""));
+        newProperty->addChild(std::make_shared<SeExprNodeSymbol>("\"" + newFootprint + "\""));
+        root->addChild(newProperty);
+    }
+
+    std::cout << BOLD_BRIGHT_YELLOW << "[DEBUG] Update 'Footprint' property COMPLETE " << RESET << "\n";
+}
+
+/**
+ * Updates the "ki_fp_filters" property for a given root symbol node,
+ * combining multiple basenames into a single string separated by spaces.
+ *
+ * This is only done when there are multiple `.kicad_mod` files.
+ */
+void updateKiFpFiltersProperty(std::shared_ptr<SeExprNodeSymbol> root, const std::vector<std::string>& basenames)
+{
+    if (basenames.size() > 1) {
+        std::cout << "[DEBUG] Updating 'ki_fp_filters' property with basenames:\n";
+        for (const auto& name : basenames) {
+            std::cout << "    - " << name << "\n";
+        }
+
+        root->clearPropertyValues("ki_fp_filters");
+
+        std::string combinedFilters;
+        for (size_t i = 0; i < basenames.size(); ++i) {
+            combinedFilters += basenames[i];
+            if (i != basenames.size() - 1) {
+                combinedFilters += " ";
+            }
+        }
+
+        root->addPropertyValues("ki_fp_filters", {combinedFilters});
+        std::cout << "[DEBUG] Combined 'ki_fp_filters' value: " << combinedFilters << "\n";
+    } else {
+        std::cout << "[DEBUG] Only one .kicad_mod file found. Skipping 'ki_fp_filters' update.\n";
     }
 }
 
+/**
+ * Main function for processing a .kicad_sym file (e.g., updating
+ * the Footprint and ki_fp_filters properties).
+*/
 
-void processKicadSymFiles(const std::string& directory, const Config& config) {
-    if (!fs::exists(directory)) {
-        throw std::runtime_error("Error: Directory does not exist: " + directory);
+void processKicadSym(const std::string& symFilePath, const Config& config)
+{
+    std::cout << CYAN << "[INFO] Processing file: " << BOLD_BRIGHT_CYAN << symFilePath << RESET << "\n";
+
+    if (!fs::exists(symFilePath)) {
+        throw std::runtime_error("Specified .kicad_sym file does not exist: " + symFilePath);
     }
 
-    auto parsedFiles = parseKicadSymFiles(directory);
+    auto root = KicadSymFileHandler::loadFromFile(symFilePath);
 
-    for (const auto& root : parsedFiles) {
-        try {
-            for (const auto& entry : fs::directory_iterator(directory)) {
-                if (entry.path().extension() == ".kicad_sym") {
-                    fs::path originalFile = entry.path();
+    // Look for `.kicad_mod` files in the same directory
+    std::vector<std::string> modFiles;
+    fs::path directory = fs::path(symFilePath).parent_path();
 
-                    // Update the "Footprint" property
-                    updateFootprintProperty(root, config);
-
-                    // Serialize the updated tree
-                    std::string updatedContent = root->toString();
-
-                    // Write the updated content back to the original file
-                    try {
-                        std::ofstream outFile(originalFile);
-                        if (!outFile) {
-                            throw std::runtime_error("Failed to open file for writing: " + originalFile.string());
-                        }
-
-                        outFile << updatedContent;
-                        outFile.close();
-                        //std::cout << GREEN << "Renamed original file to backup: " << BOLD_PURPLE << backupFile << RESET << std::endl;
-                        std::cout << GREEN << "Wrote updated file: " << BOLD_PURPLE << originalFile << RESET << std::endl;
-                    } catch (const std::exception& e) {
-                        std::cerr << RED << "Error writing updated file: " << e.what() << RESET << std::endl;
-                    }
-                }
-            }
-        } catch (const std::exception& e) {
-            std::cerr << RED << "Error processing .kicad_sym file: " << e.what() << RESET << std::endl;
+    for (const auto& entry : fs::directory_iterator(directory)) {
+        if (entry.path().extension() == ".kicad_mod") {
+            modFiles.push_back(entry.path().stem().string());
         }
     }
+
+    if (!modFiles.empty()) {
+        updateFootprintProperty(root, modFiles.front());
+
+        if (modFiles.size() > 1) {
+            updateKiFpFiltersProperty(root, modFiles);
+        }
+    }
+
+    KicadSymFileHandler::saveToFile(root, symFilePath);
+    std::cout << YELLOW << "[INFO] Finished processing " << BOLD_BRIGHT_YELLOW << fs::path(symFilePath).filename().string() << RESET <<"\n";
 }
