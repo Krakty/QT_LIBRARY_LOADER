@@ -47,8 +47,8 @@ add_executable(QT_LIBRARY_LOADER
     include/recompress_library.h
     include/display_info.h
     src/display_info.cpp
-
-
+    include/argument_handler.h
+    src/argument_handler.cpp
 )
 
 

@@ -12,6 +12,7 @@
 #include "Kicad_Sym_FileHandler.h"
 #include "s_expr_merge_symbol.h"
 #include "display_info.h"
+#include "argument_handler.h"
 
 namespace fs = std::filesystem;
 
@@ -23,6 +24,12 @@ int main(int argc, char *argv[])
     }
 
     std::string zipFilePath = argv[1];
+    ProgramExecutionState state = handleCommandLineArguments(argc, argv, zipFilePath);
+        if (state == ProgramExecutionState::EXIT_SUCCESS_STATE) {
+            return 0;
+        } else if (state == ProgramExecutionState::EXIT_FAILURE_STATE) {
+            return 1;
+        }
 
     try {
         // Extract baseName from the zip file name
@@ -41,18 +48,14 @@ int main(int argc, char *argv[])
         loader.loadConfig(); // Load the configuration file
         DisplayInfo("Configuration loaded successfully");
 
-
-        // Create the Environment
         DisplayInfo("Creating temporary directories");
         ExtractedLibrary = FileManager::createTempDir("./tmp", baseName, "kicad_orig");
         ModifiedLibrary = FileManager::createTempDir("./tmp", baseName, "kicad_working");
 
-        // Extract the ZIP File
         DisplayInfo("Extracting files from zip archive...");
         Unzipper::extractToDir(zipFilePath, ExtractedLibrary);
         DisplayInfo("Files extracted successfully");
 
-        // Search for KiCad Files
         header = "Searching for KiCad files in " + ExtractedLibrary;
         DisplayInfo_hdr(header);
         FileManager::searchFiles(ExtractedLibrary, FileExtensions, foundFiles);
@@ -72,7 +75,6 @@ int main(int argc, char *argv[])
         DisplayInfo("Copying master .kicad_sym to ModifiedLibrary...");
         FileManager::copyMasterSymbolFile();
 
-        // Environment Setup Complete
         DisplayInfo("Environment setup complete.");
         //pauseExecution("Press Enter to continue...");
 
@@ -95,7 +97,6 @@ int main(int argc, char *argv[])
         try {
             // Step 1: Load the .kicad_sym file before modification
             fs::path symFilePath = fs::path(ModifiedLibrary) / (baseName + ".kicad_sym");
-            //DisplayInfo_hdr("\n\n");
 
             auto root = KicadSymFileHandler::loadFromFile(symFilePath.string());
             DisplayInfo_hdr("Listing properties before modification:\n");
@@ -119,7 +120,7 @@ int main(int argc, char *argv[])
         }
         // End .kicad_sym file modifications
 
-        // Begin Merge Operation
+        // Begin Merge Operation of Library into the defined .kicad_sym file
         DisplayInfo("Beginning merge operation...");
         std::string masterSymPath = ModifiedLibrary + "/" + globalConfig.symbolLibraryName;
         fs::path localSymPath = fs::path(ModifiedLibrary) / (baseName + ".kicad_sym");
@@ -155,6 +156,6 @@ int main(int argc, char *argv[])
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << "\n";
         return 1;
-        }
+    }
     return 0;
 }

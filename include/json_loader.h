@@ -9,6 +9,7 @@ class JSONLoader {
 public:
     JSONLoader(const std::string &filePath);
     void loadConfig();
+    static bool createDefaultConfig(const std::string &filePath);  // New static function
 
 private:
     std::string filePath;
