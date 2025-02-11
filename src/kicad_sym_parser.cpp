@@ -1,6 +1,8 @@
 #include "kicad_sym_parser.h"
 #include "s_expr_node_symbol.h"
 #include "Kicad_Sym_FileHandler.h"
+#include "display_info.h"
+#include <sstream>
 #include <filesystem>
 #include <vector>
 #include <memory>
@@ -27,7 +29,12 @@ std::vector<std::shared_ptr<SeExprNodeSymbol>> parseKicadSymFiles(const std::str
             try {
                 auto root = KicadSymFileHandler::loadFromFile(entry.path().string());
                 parsedFiles.push_back(root);
-                std::cout << "[DEBUG] Successfully parsed: " << entry.path().filename() << "\n";
+                std::ostringstream oss; //Used to pass information to DisplayMessage functions
+                oss << "[DEBUG] Successfully parsed: " << entry.path().filename() << "\n";
+                std::string message = oss.str();
+                DisplayMessage(message);
+                oss.str(""); // Clear the stringstream
+                oss.clear(); // Reset the flags
             } catch (const std::exception& e) {
                 std::cerr << "[ERROR] Failed to parse " << entry.path().filename()
                 << ": " << e.what() << "\n";

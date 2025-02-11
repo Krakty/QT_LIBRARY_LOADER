@@ -31,6 +31,9 @@ extern std::string ModifiedLibrary;    // Path to the modified library
 extern const std::vector<std::string> FileExtensions; // Extensions for KiCad-related files
 extern const std::vector<std::string> FileTypes3D;    // Supported 3D model file types
 
+// Global variable to suppress console output
+extern bool suppress_output;
+
 // ANSI color codes for console output
 #define RESET       "\033[0m"
 #define BOLD_PURPLE "\033[1;35m"

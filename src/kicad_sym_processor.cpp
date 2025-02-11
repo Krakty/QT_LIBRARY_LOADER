@@ -2,6 +2,8 @@
 #include "Kicad_Sym_FileHandler.h"
 #include "s_expr_node_symbol.h"
 #include "config.h"
+#include "display_info.h"
+#include <sstream>
 #include <filesystem>
 #include <iostream>
 #include <stdexcept>
@@ -17,18 +19,36 @@ namespace fs = std::filesystem;
  */
 void updateFootprintProperty(std::shared_ptr<SeExprNodeSymbol> root, const std::string& basename)
 {
-    std::cout << CYAN << "[DEBUG] Attempting to update 'Footprint' property with basename: " << BOLD_BRIGHT_CYAN <<  basename << RESET <<"\n";
+    std::ostringstream oss; //Used to pass information to DisplayMessage functions
+    oss << CYAN << "[DEBUG] Attempting to update 'Footprint' property with basename: " << BOLD_BRIGHT_CYAN <<  basename << RESET <<"\n";
+    std::string message = oss.str();
+    DisplayMessage(message);
+    oss.str(""); // Clear the stringstream
+    oss.clear(); // Reset the flags
+
 
     auto footprintProperty = root->findPropertyByName("Footprint");
     std::string newFootprint = "0_Custom-Library:" + basename;
 
     if (footprintProperty) {
-        std::cout << CYAN << "[DEBUG] Found 'Footprint' property" <<"\n";
-        std::cout << BOLD_BRIGHT_PURPLE << "    Current value = "
-                  << BOLD_BRIGHT_CYAN << (footprintProperty->children.size() > 2 ? footprintProperty->children[2]->value : "N/A")
-                  << RESET << "\n";
-        std::cout << BOLD_BRIGHT_PURPLE << "    New value     = "
-                  << BOLD_BRIGHT_CYAN << newFootprint << RESET << "\n";
+        std::ostringstream oss; //Used to pass information to DisplayMessage functions
+        oss << CYAN << "[DEBUG] Found 'Footprint' property" <<"\n";
+        std::string message = oss.str();
+        DisplayMessage(message);
+        oss.str(""); // Clear the stringstream
+        oss.clear(); // Reset the flags
+
+        oss << BOLD_BRIGHT_PURPLE << "    Current value = " << BOLD_BRIGHT_CYAN << (footprintProperty->children.size() > 2 ? footprintProperty->children[2]->value : "N/A")<< RESET << "\n";
+        message =oss.str();
+        DisplayMessage(message);
+        oss.str(""); // Clear the stringstream
+        oss.clear(); // Reset the flags
+
+        oss << BOLD_BRIGHT_PURPLE << "    New value     = " << BOLD_BRIGHT_CYAN << newFootprint << RESET << "\n";
+        message =oss.str();
+        DisplayMessage(message);
+        oss.str(""); // Clear the stringstream
+        oss.clear(); // Reset the flags
 
         if (footprintProperty->children.size() > 2) {
             footprintProperty->children[2]->value = "\"" + newFootprint + "\"";
@@ -36,15 +56,20 @@ void updateFootprintProperty(std::shared_ptr<SeExprNodeSymbol> root, const std::
             footprintProperty->addChild(std::make_shared<SeExprNodeSymbol>("\"" + newFootprint + "\""));
         }
     } else {
-        std::cout << "[DEBUG] 'Footprint' property not found. Creating new property.\n";
+        DisplayMessage("[DEBUG] 'Footprint' property not found. Creating new property.\n");
         auto newProperty = std::make_shared<SeExprNodeSymbol>();
         newProperty->addChild(std::make_shared<SeExprNodeSymbol>("property"));
         newProperty->addChild(std::make_shared<SeExprNodeSymbol>("\"Footprint\""));
         newProperty->addChild(std::make_shared<SeExprNodeSymbol>("\"" + newFootprint + "\""));
         root->addChild(newProperty);
     }
-
-    std::cout << BOLD_BRIGHT_YELLOW << "[DEBUG] Update 'Footprint' property COMPLETE " << RESET << "\n";
+    oss.str(""); // Clear the stringstream
+    oss.clear(); // Reset the flags
+    oss << BOLD_BRIGHT_YELLOW << "[DEBUG] Update 'Footprint' property COMPLETE " << RESET << "\n";
+    message = oss.str();
+    DisplayMessage(message);
+    oss.str(""); // Clear the stringstream
+    oss.clear(); // Reset the flags
 }
 
 /**
@@ -56,7 +81,7 @@ void updateFootprintProperty(std::shared_ptr<SeExprNodeSymbol> root, const std::
 void updateKiFpFiltersProperty(std::shared_ptr<SeExprNodeSymbol> root, const std::vector<std::string>& basenames)
 {
     if (basenames.size() > 1) {
-        std::cout << "[DEBUG] Updating 'ki_fp_filters' property with basenames:\n";
+        DisplayMessage("[DEBUG] Updating 'ki_fp_filters' property with basenames:\n");
         for (const auto& name : basenames) {
             std::cout << "    - " << name << "\n";
         }
@@ -72,9 +97,15 @@ void updateKiFpFiltersProperty(std::shared_ptr<SeExprNodeSymbol> root, const std
         }
 
         root->addPropertyValues("ki_fp_filters", {combinedFilters});
-        std::cout << "[DEBUG] Combined 'ki_fp_filters' value: " << combinedFilters << "\n";
+        std::ostringstream oss; //Used to pass information to DisplayMessage functions
+        oss << "[DEBUG] Combined 'ki_fp_filters' value: " << combinedFilters << "\n";
+        std::string message = oss.str();
+        DisplayMessage(message);
+        oss.str(""); // Clear the stringstream
+        oss.clear(); // Reset the flags
+
     } else {
-        std::cout << "[DEBUG] Only one .kicad_mod file found. Skipping 'ki_fp_filters' update.\n";
+        DisplayMessage("[DEBUG] Only one .kicad_mod file found. Skipping 'ki_fp_filters' update.\n");
     }
 }
 
@@ -85,7 +116,12 @@ void updateKiFpFiltersProperty(std::shared_ptr<SeExprNodeSymbol> root, const std
 
 void processKicadSym(const std::string& symFilePath, const Config& config)
 {
-    std::cout << CYAN << "[INFO] Processing file: " << BOLD_BRIGHT_CYAN << symFilePath << RESET << "\n";
+    std::ostringstream oss; //Used to pass information to DisplayMessage functions
+    oss << CYAN << "[INFO] Processing file: " << BOLD_BRIGHT_CYAN << symFilePath << RESET << "\n";
+    std::string message = oss.str();
+    DisplayMessage(message);
+    oss.str(""); // Clear the stringstream
+    oss.clear(); // Reset the flags
 
     if (!fs::exists(symFilePath)) {
         throw std::runtime_error("Specified .kicad_sym file does not exist: " + symFilePath);
@@ -112,5 +148,9 @@ void processKicadSym(const std::string& symFilePath, const Config& config)
     }
 
     KicadSymFileHandler::saveToFile(root, symFilePath);
-    std::cout << YELLOW << "[INFO] Finished processing " << BOLD_BRIGHT_YELLOW << fs::path(symFilePath).filename().string() << RESET <<"\n";
+    oss << YELLOW << "[INFO] Finished processing " << BOLD_BRIGHT_YELLOW << fs::path(symFilePath).filename().string() << RESET <<"\n";
+    message = oss.str();
+    DisplayMessage(message);
+    oss.str(""); // Clear the stringstream
+    oss.clear(); // Reset the flags
 }

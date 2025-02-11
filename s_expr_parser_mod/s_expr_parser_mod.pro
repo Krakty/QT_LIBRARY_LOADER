@@ -10,4 +10,3 @@ SOURCES += src/s_expr_node_mod.cpp \
 
 HEADERS += include/s_expr_node_mod.h \
            include/s_expr_parser_mod.h
-

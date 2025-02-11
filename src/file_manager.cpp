@@ -1,5 +1,6 @@
 #include "file_manager.h"
 #include "config.h"
+#include "display_info.h"
 #include <filesystem>
 #include <iostream>
 #include <algorithm>
@@ -16,7 +17,12 @@ void FileManager::searchFiles(const std::string &directory,
                 std::string extension = entry.path().extension().string();
                 if (std::find(extensions.begin(), extensions.end(), extension) != extensions.end()) {
                     foundFiles.push_back(entry.path().string());
-                    std::cout << BRIGHT_CYAN << "    Found file: " << entry.path() << " (extension: " << extension << ")\n"<< RESET;
+                    std::ostringstream oss;
+                    oss  << BRIGHT_CYAN << "    Found file: " << entry.path() << " (extension: " << extension << ")\n"<< RESET;
+                    std::string message = oss.str();
+                    DisplayMessage(message);
+                    oss.str(""); // Clear the stringstream
+                    oss.clear(); // Reset the flags
                 }
             }
         }
@@ -34,7 +40,12 @@ void FileManager::copyFiles(const std::vector<std::string> &files, const std::st
         fs::path destinationPath = fs::path(destination) / sourcePath.filename();
         try {
             fs::copy_file(sourcePath, destinationPath, fs::copy_options::overwrite_existing);
-            std::cout << BRIGHT_CYAN << "    Copied: " << sourcePath << " -> " << destinationPath << std::endl << RESET;
+            std::ostringstream oss;
+            oss  << BRIGHT_CYAN << "    Copied: " << sourcePath << " -> " << destinationPath << std::endl << RESET;
+            std::string message = oss.str();
+            DisplayMessage(message);
+            oss.str(""); // Clear the stringstream
+            oss.clear(); // Reset the flags
         } catch (const fs::filesystem_error &e) {
             std::cerr << "Error copying file: " << sourcePath
                       << ". Reason: " << e.what() << std::endl;
@@ -70,7 +81,12 @@ void FileManager::renameFiles(const std::string &directory, const std::string &n
 
             try {
                 fs::rename(oldPath, newPath);
-                std::cout << BRIGHT_CYAN << "    Renamed: " << oldPath << " -> " << newPath << std::endl;
+                std::ostringstream oss;
+                oss << BRIGHT_CYAN << "    Renamed: " << oldPath << " -> " << newPath << std::endl;
+                std::string message = oss.str();
+                DisplayMessage(message);
+                oss.str(""); // Clear the stringstream
+                oss.clear(); // Reset the flags
                 modFileCount++;
             } catch (const fs::filesystem_error &e) {
                 std::cerr << "Error renaming file: " << oldPath
@@ -86,7 +102,12 @@ void FileManager::renameFiles(const std::string &directory, const std::string &n
             fs::path newPath = fs::path(directory) / (newBaseName + oldPath.extension().string());
             try {
                 fs::rename(oldPath, newPath);
-                std::cout << "    Renamed: " << oldPath << " -> " << newPath << std::endl;
+                std::ostringstream oss; //Used to pass information to DisplayMessage functions
+                oss << "    Renamed: " << oldPath << " -> " << newPath << std::endl;
+                std::string message = oss.str();
+                DisplayMessage(message);
+                oss.str(""); // Clear the stringstream
+                oss.clear(); // Reset the flags
             } catch (const fs::filesystem_error &e) {
                 std::cerr << "Error renaming file: " << oldPath
                           << ". Reason: " << e.what() << std::endl;
@@ -104,8 +125,13 @@ std::string FileManager::createTempDir(const std::string& root,
         if (!fs::exists(fullPath)) {
             throw std::runtime_error("Failed to create directory: " + fullPath);
         }
-        std::cout << BOLD_CYAN << "Successfully created directory: " << fullPath << RESET << std::endl;
 
+        std::ostringstream oss; //Used to pass information to DisplayMessage functions
+        oss << BOLD_CYAN << "Successfully created directory: " << fullPath << RESET << std::endl;
+        std::string message = oss.str();
+        DisplayMessage(message);
+        oss.str(""); // Clear the stringstream
+        oss.clear(); // Reset the flags
     } catch (const std::exception& e) {
         std::cerr << "Error creating directory: " << fullPath
                   << ". Reason: " << e.what() << std::endl;
@@ -137,15 +163,22 @@ void FileManager::copyKicadModFiles() {
             fs::path destPath = fs::path(destination) / entry.path().filename();
             try {
                 fs::copy_file(entry.path(), destPath, fs::copy_options::overwrite_existing);
-                std::cout << CYAN << "Copy .kicad_mod files:\n" << RESET;
-
-                std::cout << RED << "  SOURCE:      "
-                          << YELLOW << entry.path()
-                          << RESET << "\n";
-                std::cout << RED << "  DESTINATION: "
-                          << YELLOW << destPath
-                          << RESET << "\n\n";
-
+                std::ostringstream oss; //Used to pass information to DisplayMessage functions
+                oss << CYAN << "Copy .kicad_mod files:\n" << RESET;
+                std::string message = oss.str();
+                DisplayMessage(message);
+                oss.str(""); // Clear the stringstream
+                oss.clear(); // Reset the flags
+                oss << RED << "  SOURCE:      " << YELLOW << entry.path() << RESET << "\n";
+                message = oss.str();
+                DisplayMessage(message);
+                oss.str(""); // Clear the stringstream
+                oss.clear(); // Reset the flags
+                oss << RED << "  DESTINATION: " << YELLOW << destPath << RESET << "\n\n";
+                message = oss.str();
+                DisplayMessage(message);
+                oss.str(""); // Clear the stringstream
+                oss.clear(); // Reset the flags
             } catch (const fs::filesystem_error& e) {
                 std::cerr << "Error copying .kicad_mod file: " << e.what() << std::endl;
             }
@@ -165,14 +198,22 @@ void FileManager::copy3DModelFiles() {
                 fs::path destPath = fs::path(destination) / entry.path().filename();
                 try {
                     fs::copy_file(entry.path(), destPath, fs::copy_options::overwrite_existing);
-                    std::cout << CYAN << "Copy 3D files:\n" << RESET;
-
-                    std::cout << RED << "  SOURCE:      "
-                              << YELLOW << entry.path()
-                              << RESET << "\n";
-                    std::cout << RED << "  DESTINATION: "
-                              << YELLOW << destPath
-                              << RESET << "\n\n";
+                    std::ostringstream oss; //Used to pass information to DisplayMessage functions
+                    oss << CYAN << "Copy 3D files:\n" << RESET;
+                    std::string message = oss.str();
+                    DisplayMessage(message);
+                    oss.str(""); // Clear the stringstream
+                    oss.clear(); // Reset the flags
+                    oss << RED << "  SOURCE:      " << YELLOW << entry.path() << RESET << "\n";
+                    message = oss.str();
+                    DisplayMessage(message);
+                    oss.str(""); // Clear the stringstream
+                    oss.clear(); // Reset the flags
+                    oss << RED << "  DESTINATION: " << YELLOW << destPath << RESET << "\n\n";
+                    message = oss.str();
+                    DisplayMessage(message);
+                    oss.str(""); // Clear the stringstream
+                    oss.clear(); // Reset the flags
                     return; // Only copy the first valid 3D model found
                 } catch (const fs::filesystem_error& e) {
                     std::cerr << "Error copying 3D model file: " << e.what() << std::endl;
@@ -190,15 +231,25 @@ void FileManager::copyMergedSymbolFile() {
     if (fs::exists(sourcePath)) {
         try {
             fs::copy_file(sourcePath, destination, fs::copy_options::overwrite_existing);
-            std::cout << CYAN << "Copy merged .kicad_sym files:\n" << RESET;
 
-            std::cout << RED << "  SOURCE:      "
-                      << YELLOW << sourcePath
-                      << RESET << "\n";
-            std::cout << RED << "  DESTINATION: "
-                      << YELLOW << destination
-                      << RESET << "\n\n";
+            std::ostringstream oss; //Used to pass information to DisplayMessage functions
+            oss << CYAN << "Copy merged .kicad_sym files:\n" << RESET;
+            std::string message = oss.str();
+            DisplayMessage(message);
 
+            oss.str(""); // Clear the stringstream
+            oss.clear(); // Reset the flags
+            oss << RED << "  SOURCE:      " << YELLOW << sourcePath << RESET << "\n";
+            message = oss.str();
+            DisplayMessage(message);
+
+            oss.str(""); // Clear the stringstream
+            oss.clear(); // Reset the flags
+            oss << RED << "  DESTINATION: " << YELLOW << destination << RESET << "\n\n";
+            message = oss.str();
+            DisplayMessage(message);
+            oss.str(""); // Clear the stringstream
+            oss.clear(); // Reset the flags;
         } catch (const fs::filesystem_error& e) {
             std::cerr << "Error copying .kicad_sym file: " << e.what() << std::endl;
         }
@@ -210,10 +261,15 @@ void FileManager::copyMergedSymbolFile() {
 void FileManager::copyMasterSymbolFile() {
     std::string source = globalConfig.libraryLocation + globalConfig.symbolLibraryName;
     std::string destination = ModifiedLibrary + "/" + globalConfig.symbolLibraryName;
-    std::cout << CYAN << "[INFO] Copying master .kicad_sym:\n"
-              << BOLD_BRIGHT_GREEN << "SOURCE:      " << BOLD_CYAN << source << "\n"
-              << BOLD_BRIGHT_GREEN << "DESTINATION: " << BOLD_CYAN << destination
-              << RESET << std::endl;
+    std::ostringstream oss; //Used to pass information to DisplayMessage functions
+    oss << CYAN << "[INFO] Copying master .kicad_sym:\n"
+        << BOLD_BRIGHT_GREEN << "SOURCE:      " << BOLD_CYAN << source << "\n"
+        << BOLD_BRIGHT_GREEN << "DESTINATION: " << BOLD_CYAN << destination
+        << RESET << std::endl;
+    std::string message = oss.str();
+    DisplayMessage(message);
+    oss.str(""); // Clear the stringstream
+    oss.clear(); // Reset the flags
     fs::copy_file(source, destination, fs::copy_options::overwrite_existing);
 }
 
@@ -225,7 +281,12 @@ void FileManager::BackupMasterKicadSym() {
 
     try {
         fs::copy_file(masterPath, backupPath, fs::copy_options::overwrite_existing);
-        std::cout << CYAN << "[INFO] Backup created at: " << BRIGHT_CYAN << backupPath << RESET << "\n";
+        std::ostringstream oss; //Used to pass information to DisplayMessage functions
+        oss << CYAN << "[INFO] Backup created at: " << BRIGHT_CYAN << backupPath << RESET << "\n";
+        std::string message = oss.str();
+        DisplayMessage(message);
+        oss.str(""); // Clear the stringstream
+        oss.clear(); // Reset the flags
     } catch (const std::exception& e) {
         std::cerr << "[ERROR] Error creating backup: " << e.what() << "\n";
     }

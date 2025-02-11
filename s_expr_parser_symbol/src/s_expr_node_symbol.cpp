@@ -125,7 +125,6 @@ void SeExprNodeSymbol::printAllProperties(const std::string& parentSymbol) {
             }
             std::cout << std::endl;
         }
-
         // Recursively process child nodes
         for (const auto& child : children) {
             child->printAllProperties(parentSymbol);

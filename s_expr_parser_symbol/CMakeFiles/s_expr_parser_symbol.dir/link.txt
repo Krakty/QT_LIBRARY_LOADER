@@ -1,2 +1,0 @@
-/usr/bin/ar qc libs_expr_parser_symbol.a CMakeFiles/s_expr_parser_symbol.dir/s_expr_parser_symbol_autogen/mocs_compilation.cpp.o CMakeFiles/s_expr_parser_symbol.dir/src/s_expr_node_symbol.cpp.o CMakeFiles/s_expr_parser_symbol.dir/src/s_expr_parser_symbol.cpp.o
-/usr/bin/ranlib libs_expr_parser_symbol.a

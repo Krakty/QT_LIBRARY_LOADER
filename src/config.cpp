@@ -8,6 +8,9 @@ std::string ExtractedLibrary;
 std::string ModifiedLibrary;
 Config globalConfig;
 
+// Default to not suppress output
+bool suppress_output = false;
+
 // Define file extension lists
 const std::vector<std::string> FileExtensions = {
     ".epw", ".stp", ".wrl", ".step", ".wrz", ".x3d", ".idf", ".emn",

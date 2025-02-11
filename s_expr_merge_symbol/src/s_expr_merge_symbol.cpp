@@ -5,7 +5,6 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "config.h"
 
 namespace SeExprMergeSymbol {
 
@@ -181,10 +180,11 @@ bool mergeSymbolLibraryFiles(const std::string& masterPath,
     outFile << masterRoot->toString() << "\n";
     outFile.close();
 
-    std::cout << CYAN << "[INFO] Successfully merged symbols from:\n"
+    /*std::cout << CYAN << "[INFO] Successfully merged symbols from:\n"
               << RED << "\nSOURCE:             " << YELLOW << targetPath << RESET
               << RED << "\nDESTINATION:        " << YELLOW << masterPath << RESET
               << "\n\n";
+    */
     return true;
 }
 

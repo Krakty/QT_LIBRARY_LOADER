@@ -3,6 +3,9 @@
 #include <iostream>
 
 void DisplayInfo(const std::string& message) {
+    // Check if we should suppress output
+    if (suppress_output) return;
+
     const int totalWidth = 70;               // Total width of the banner
     const std::string border(totalWidth, '*'); // Creates a line of 70 asterisks
     const int contentWidth = totalWidth - 8;   // Subtract 8 for the "****" on both sides
@@ -24,10 +27,20 @@ void DisplayInfo(const std::string& message) {
 }
 
 void DisplayInfo_hdr(const std::string& message) {
+    // Check if we should suppress output
+    if (suppress_output) return;
+
     const int totalWidth = 70;               // Total width of the banner
     const std::string header(totalWidth, '*'); // Creates a line of 70 asterisks
-    const int contentWidth = totalWidth - 8;   // Subtract 8 for the "****" on both sides
+    //const int contentWidth = totalWidth - 8;   // Subtract 8 for the "****" on both sides
 
     std::cout << BRIGHT_RED << header << "\n";
     std::cout << CYAN << message << "\n";
 }
+
+void DisplayMessage(const std::string& message) {
+    // Check if we should suppress output
+    if (suppress_output) return;
+    std::cout << message ;
+}
+

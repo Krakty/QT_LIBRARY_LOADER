@@ -45,6 +45,7 @@ bool JSONLoader::createDefaultConfig(const std::string &filePath) {
 
     file << defaultConfig.dump(4);  // Pretty print with 4-space indentation
     file.close();
+
     std::cout << "Default configuration created at " << filePath << std::endl;
     return true;
 }

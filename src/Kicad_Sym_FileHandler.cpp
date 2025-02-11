@@ -1,9 +1,12 @@
 #include "Kicad_Sym_FileHandler.h"
 #include "s_expr_parser_symbol.h"
+#include "config.h"
+#include "display_info.h"
+#include <sstream>
 #include <fstream>
 #include <stdexcept>
 #include <iostream>
-#include "config.h"
+
 /**
  * Load an S-expression tree from a `.kicad_sym` file.
  */
@@ -12,11 +15,14 @@ std::shared_ptr<SeExprNodeSymbol> KicadSymFileHandler::loadFromFile(const std::s
     if (!file.is_open()) {
         throw std::runtime_error("Error: Unable to open file '" + filePath + "'");
     }
-
     std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     file.close();
-
-    std::cout << CYAN << "[DEBUG] Loaded file: " << BOLD_BRIGHT_CYAN << filePath << RESET <<"\n";
+    std::ostringstream oss; //Used to pass information to DisplayMessage functions
+    oss << CYAN << "[DEBUG] Loaded file: " << BOLD_BRIGHT_CYAN << filePath << RESET <<"\n";
+    std::string message = oss.str();
+    DisplayMessage(message);
+    oss.str(""); // Clear the stringstream
+    oss.clear(); // Reset the flags
     return SeExprParserSymbol::parse(content);
 }
 
@@ -28,11 +34,14 @@ void KicadSymFileHandler::saveToFile(const std::shared_ptr<SeExprNodeSymbol>& ro
     if (!file.is_open()) {
         throw std::runtime_error("Error: Unable to open file for writing '" + filePath + "'");
     }
-
     file << root->toString();
     file.close();
-
-    std::cout << YELLOW << "[DEBUG] Saved modified file: " << BOLD_BRIGHT_YELLOW <<  filePath << RESET << "\n";
+    std::ostringstream oss; //Used to pass information to DisplayMessage functions
+    oss << YELLOW << "[DEBUG] Saved modified file: " << BOLD_BRIGHT_YELLOW <<  filePath << RESET << "\n";
+    std::string message = oss.str();
+    DisplayMessage(message);
+    oss.str(""); // Clear the stringstream
+    oss.clear(); // Reset the flags
 }
 
 /**
@@ -44,7 +53,12 @@ void KicadSymFileHandler::updateProperty(std::shared_ptr<SeExprNodeSymbol>& root
     auto targetNode = root->findKey(key);
     if (targetNode && targetNode->type == SeExprNodeSymbol::NodeType::Atom) {
         if (auto ptr = targetNode->shared_from_this(); ptr) {
-            std::cout << "[DEBUG] Updating property '" << key << "' from '" << ptr->value << "' to '" << newValue << "'\n";
+            std::ostringstream oss; //Used to pass information to DisplayMessage functions
+            oss << "[DEBUG] Updating property '" << key << "' from '" << ptr->value << "' to '" << newValue << "'\n";
+            std::string message = oss.str();
+            DisplayMessage(message);
+            oss.str(""); // Clear the stringstream
+            oss.clear(); // Reset the flags
             ptr->value = newValue;
         }
     } else {

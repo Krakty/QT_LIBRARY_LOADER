@@ -1,11 +1,12 @@
 #include "kicad_mod_processor.h"
-//#include "kicad_mod_parser.h"
 #include "s_expr_node_mod.h"
-#include "s_expr_parser_mod.h" // for SExprParserMod::parse
+#include "s_expr_parser_mod.h"
+#include "config.h"
+#include "display_info.h"
+#include <sstream>
 #include <filesystem>
 #include <iostream>
 #include <stdexcept>
-#include "config.h"
 #include <fstream>
 #include <thread>
 #include <mutex>
@@ -96,7 +97,12 @@ void KicadModProcessor::processKicadModFiles(const std::string &directory,
                     } else {
                         outFile << updatedContent;
                         outFile.close();
-                        std::cout << "Successfully updated: " << filePath << std::endl;
+                        std::ostringstream oss; //Used to pass information to DisplayMessage functions
+                        oss << "Successfully updated: " << filePath << std::endl;
+                        std::string message = oss.str();
+                        DisplayMessage(message);
+                        oss.str(""); // Clear the stringstream
+                        oss.clear(); // Reset the flags
                     }
                 }
             } catch (const std::exception &e) {
@@ -122,9 +128,17 @@ void KicadModProcessor::insertModelNode(std::shared_ptr<SExprNodeMod> root,
     std::string localFileName;
     try {
         localFileName = find3DFile(ModifiedLibrary, baseName);
-        std::cout << RED << "\n3D File Identified... " << GREEN << localFileName << RESET << std::endl;
-        std::cout << RED << "Complete Path...      " << GREEN
-                  << ModifiedLibrary + "/" + localFileName << RESET << std::endl;
+        std::ostringstream oss; //Used to pass information to DisplayMessage functions
+        oss << RED << "\n3D File Identified... " << GREEN << localFileName << RESET << std::endl;
+        std::string message = oss.str();
+        DisplayMessage(message);
+        oss.str(""); // Clear the stringstream
+        oss.clear(); // Reset the flags
+        oss << RED << "Complete Path...      " << GREEN << ModifiedLibrary + "/" + localFileName << RESET << std::endl;
+        message = oss.str();
+        DisplayMessage(message);
+        oss.str(""); // Clear the stringstream
+        oss.clear(); // Reset the flags
     } catch (const std::exception& e) {
         std::cerr << "Error finding 3D file: " << e.what()
         << " Defaulting to .stp" << std::endl;
@@ -133,7 +147,7 @@ void KicadModProcessor::insertModelNode(std::shared_ptr<SExprNodeMod> root,
 
     // 2) Check if a (model ...) node already exists
     if (root->toString().find("(model ") != std::string::npos) {
-        std::cout << "Model node already exists. Updating path instead.\n";
+        DisplayMessage("Model node already exists. Updating path instead.\n");
         updateModelPath(root, config, baseName);
         return;
     }
@@ -159,8 +173,7 @@ void KicadModProcessor::insertModelNode(std::shared_ptr<SExprNodeMod> root,
 
     // 6) Append this new (model ...) node to the existing (module ...) root
     root->addChild(newModelNode);
-
-    std::cout << "Inserted missing model node into the S-expression tree.\n";
+    DisplayMessage("Inserted missing model node into the S-expression tree.\n");
 }
 
 void KicadModProcessor::updateModelPath(std::shared_ptr<SExprNodeMod> modelNode,
@@ -177,8 +190,13 @@ void KicadModProcessor::updateModelPath(std::shared_ptr<SExprNodeMod> modelNode,
             try {
                 std::string fileName = find3DFile(ModifiedLibrary, baseName);
                 std::string newPath = config.model3D + "/" + fileName;
-                std::cout << "Updating model path from: " << child->value
-                          << " to: " << newPath << std::endl;
+                std::ostringstream oss; //Used to pass information to DisplayMessage functions
+                oss << "Updating model path from: " << child->value << " to: " << newPath << std::endl;
+                std::string message = oss.str();
+                DisplayMessage(message);
+                oss.str(""); // Clear the stringstream
+                oss.clear(); // Reset the flags
+
                 child->value = newPath;
                 return;
             } catch (const std::exception& e) {
@@ -198,7 +216,13 @@ std::string KicadModProcessor::find3DFile(const std::string& directory,
 
     for (const auto& ext : FileTypes3D) {
         fs::path filePath = fs::path(directory) / (baseName + ext);
-        std::cout << RED << "\nSearching for...      " << GREEN << filePath << RESET << std::endl;
+        std::ostringstream oss; //Used to pass information to DisplayMessage functions
+        oss << RED << "\nSearching for...      " << GREEN << filePath << RESET << std::endl;
+        std::string message = oss.str();
+        DisplayMessage(message);
+        oss.str(""); // Clear the stringstream
+        oss.clear(); // Reset the flags
+
         if (fs::exists(filePath)) {
             return filePath.filename().string();
         }
