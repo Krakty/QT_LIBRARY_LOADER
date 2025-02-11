@@ -17,6 +17,10 @@ QT_LIBRARY_LOADER is a C++ project designed to parse and manipulate KiCad librar
 /kicad-library-parser
 │── /include               # Header files
 │── /src                   # Source files
+├── s_expr_merge_symbol    # Merge code to merge our modified symbol into the master symbol library
+    │── /include           # Header files
+    │── /src               # Source files
+    │── CMakeLists.txt     # Build system configuration
 │── /s_expr_parser_sym     # Custom s_expr symbol parser
     │── /include           # Header files
     │── /src               # Source files
