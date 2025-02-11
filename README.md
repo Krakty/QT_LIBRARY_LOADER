@@ -35,12 +35,10 @@ QT_LIBRARY_LOADER is a C++ project designed to parse and manipulate KiCad librar
 ```
 
 ## TODO
-- ** implement file copying to destination folders as indicated in the  QT_LIBRARY_LOADER.json
-- ** implement merging of .kicad_sym into the master .kicad_sym unlike the .kicad_mod which can be dropped in the .pretty directory it's necessary to merge content for the .kicad_sym file.
 
 ## Dependencies
 
-- **CMake**: Used for building the project.
+- **QMake**: Used for building the project.
 - **Qt Creator**: Recommended development environment.
 
 ## Installation
@@ -54,7 +52,7 @@ cd QT_LIBRARY_LOADER
 
 mkdir build
 cd build
-cmake ..
+qmake ..
 make -j$(nproc)
 
 
