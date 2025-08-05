@@ -1,6 +1,7 @@
 #include "file_manager.h"
 #include "config.h"
 #include "display_info.h"
+#include "file_utils.h"
 #include <filesystem>
 #include <iostream>
 #include <algorithm>
@@ -161,8 +162,8 @@ void FileManager::copyKicadModFiles() {
     for (const auto& entry : fs::directory_iterator(ModifiedLibrary)) {
         if (entry.path().extension() == ".kicad_mod") {
             fs::path destPath = fs::path(destination) / entry.path().filename();
-            try {
-                fs::copy_file(entry.path(), destPath, fs::copy_options::overwrite_existing);
+            // Use NFS-safe copy for .kicad_mod files
+            if (nfsSafeCopyFile(entry.path().string(), destPath.string())) {
                 std::ostringstream oss; //Used to pass information to DisplayMessage functions
                 oss << CYAN << "Copy .kicad_mod files:\n" << RESET;
                 std::string message = oss.str();
@@ -179,8 +180,8 @@ void FileManager::copyKicadModFiles() {
                 DisplayMessage(message);
                 oss.str(""); // Clear the stringstream
                 oss.clear(); // Reset the flags
-            } catch (const fs::filesystem_error& e) {
-                std::cerr << "Error copying .kicad_mod file: " << e.what() << std::endl;
+            } else {
+                std::cerr << "Error copying .kicad_mod file using NFS-safe copy method" << std::endl;
             }
         }
     }
@@ -196,8 +197,8 @@ void FileManager::copy3DModelFiles() {
         for (const auto& entry : fs::directory_iterator(ModifiedLibrary)) {
             if (entry.path().extension() == ext) {
                 fs::path destPath = fs::path(destination) / entry.path().filename();
-                try {
-                    fs::copy_file(entry.path(), destPath, fs::copy_options::overwrite_existing);
+                // Use NFS-safe copy for 3D model files
+                if (nfsSafeCopyFile(entry.path().string(), destPath.string())) {
                     std::ostringstream oss; //Used to pass information to DisplayMessage functions
                     oss << CYAN << "Copy 3D files:\n" << RESET;
                     std::string message = oss.str();
@@ -215,8 +216,8 @@ void FileManager::copy3DModelFiles() {
                     oss.str(""); // Clear the stringstream
                     oss.clear(); // Reset the flags
                     return; // Only copy the first valid 3D model found
-                } catch (const fs::filesystem_error& e) {
-                    std::cerr << "Error copying 3D model file: " << e.what() << std::endl;
+                } else {
+                    std::cerr << "Error copying 3D model file using NFS-safe copy method" << std::endl;
                 }
             }
         }
@@ -229,9 +230,8 @@ void FileManager::copyMergedSymbolFile() {
     fs::path destination = fs::path(globalConfig.libraryLocation) / globalConfig.symbolLibraryName;
 
     if (fs::exists(sourcePath)) {
-        try {
-            fs::copy_file(sourcePath, destination, fs::copy_options::overwrite_existing);
-
+        // Use NFS-safe copy function instead of fs::copy_file
+        if (nfsSafeCopyFile(sourcePath.string(), destination.string())) {
             std::ostringstream oss; //Used to pass information to DisplayMessage functions
             oss << CYAN << "Copy merged .kicad_sym files:\n" << RESET;
             std::string message = oss.str();
@@ -250,8 +250,8 @@ void FileManager::copyMergedSymbolFile() {
             DisplayMessage(message);
             oss.str(""); // Clear the stringstream
             oss.clear(); // Reset the flags;
-        } catch (const fs::filesystem_error& e) {
-            std::cerr << "Error copying .kicad_sym file: " << e.what() << std::endl;
+        } else {
+            std::cerr << "Error copying .kicad_sym file using NFS-safe copy method" << std::endl;
         }
     } else {
         std::cerr << "Error: Merged .kicad_sym file not found in " << ModifiedLibrary << std::endl;
@@ -270,6 +270,8 @@ void FileManager::copyMasterSymbolFile() {
     DisplayMessage(message);
     oss.str(""); // Clear the stringstream
     oss.clear(); // Reset the flags
+    
+    // Use regular copy here since source is NFS and destination is local temp
     fs::copy_file(source, destination, fs::copy_options::overwrite_existing);
 }
 
@@ -279,16 +281,16 @@ void FileManager::BackupMasterKicadSym() {
     fs::path backupPath = masterPath;
     backupPath.replace_extension(".bak");
 
-    try {
-        fs::copy_file(masterPath, backupPath, fs::copy_options::overwrite_existing);
+    // Use NFS-safe copy for backup since both source and destination are on NFS
+    if (nfsSafeCopyFile(masterPath.string(), backupPath.string())) {
         std::ostringstream oss; //Used to pass information to DisplayMessage functions
         oss << CYAN << "[INFO] Backup created at: " << BRIGHT_CYAN << backupPath << RESET << "\n";
         std::string message = oss.str();
         DisplayMessage(message);
         oss.str(""); // Clear the stringstream
         oss.clear(); // Reset the flags
-    } catch (const std::exception& e) {
-        std::cerr << "[ERROR] Error creating backup: " << e.what() << "\n";
+    } else {
+        std::cerr << "[ERROR] Error creating backup using NFS-safe copy method\n";
     }
 }
 
